@@ -3,7 +3,6 @@ Esse sistema de exemplo é composto por um conjunto de tabelas que representam p
 O sistema exige que as tabelas existam, então basta executar o script Python a seguir para criação das tabelas e preenchimento de dados de exemplos:
 
 ~$ python create_tables_and_records.py
-Para executar o sistema basta executar o script Python a seguir:
 
 ~$ python principal.py
 Para que possa testar as conexões com o banco de dados Oracle e o módulo Conexion desenvolvido para esse projeto, basta executar o script Python a seguir:
