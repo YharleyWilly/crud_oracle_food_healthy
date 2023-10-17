@@ -1,0 +1,106 @@
+/******************************************************************************************************
+
+AS CONSULTAS ABAIXO FORAM REALIZADAS NO DESENVOLVIMENTO DO TRABALHO, A FIM DE TESTAR AS CONSULTAS NO BD
+
+*******************************************************************************************************/
+
+
+-- Inserir dados na tabela CLIENTES
+INSERT INTO CLIENTES (CPF_CLIENTE, NOME_CLIENTE, TELEFONE_CLIENTE, EMAIL_CLIENTE)
+VALUES ('11111111111', 'yharley', '91919191919', 'yharley@gmail.com');
+
+-- Inserir outro cliente com um CPF diferente
+INSERT INTO CLIENTES (CPF_CLIENTE, NOME_CLIENTE, TELEFONE_CLIENTE, EMAIL_CLIENTE)
+VALUES ('22222222222', 'tiago', '81818181818', 'tiago@gmail.com');
+
+-- Inserir outro cliente com um CPF diferente
+INSERT INTO CLIENTES (CPF_CLIENTE, NOME_CLIENTE, TELEFONE_CLIENTE, EMAIL_CLIENTE)
+VALUES ('33333333333', 'kezia ruivinha', '61616161616', 'kezia@gmail.com');
+
+-- Inserir uma comanda com ID gerado automaticamente e data atual
+INSERT INTO SYSTEM.COMANDAS (ID_COMANDA, DATA_COMANDA, STATUS_COMANDA, CPF_CLIENTE)
+VALUES (SYSTEM.COMANDAS_ID_COMANDA_SEQ.NEXTVAL, CURRENT_DATE, 'Aberta', '11111111111');
+
+-- Inserir uma comanda com ID gerado automaticamente e data atual
+INSERT INTO SYSTEM.COMANDAS (ID_COMANDA, DATA_COMANDA, STATUS_COMANDA, CPF_CLIENTE)
+VALUES (SYSTEM.COMANDAS_ID_COMANDA_SEQ.NEXTVAL, CURRENT_DATE, 'Aberta', '22222222222');
+
+-- Inserir uma comanda com ID gerado automaticamente e data atual
+INSERT INTO SYSTEM.COMANDAS (ID_COMANDA, DATA_COMANDA, STATUS_COMANDA, CPF_CLIENTE)
+VALUES (SYSTEM.COMANDAS_ID_COMANDA_SEQ.NEXTVAL, CURRENT_DATE, 'Aberta', '33333333333');
+
+-- Inserir itens na comanda com ID gerado automaticamente
+INSERT INTO SYSTEM.ITENS_COMANDA (ID_ITEM_COMANDA, QTD_ITEM, DESCRICAO_PRODUTO, VALOR_UNITARIO_ITEM, ID_COMANDA)
+VALUES (SYSTEM.ITENS_COMANDA_ID_ITEM_COMANDA_SEQ.NEXTVAL, 5, 'Produto A', 10.00, 1);
+
+INSERT INTO SYSTEM.ITENS_COMANDA (ID_ITEM_COMANDA, QTD_ITEM, DESCRICAO_PRODUTO, VALOR_UNITARIO_ITEM, ID_COMANDA)
+VALUES (SYSTEM.ITENS_COMANDA_ID_ITEM_COMANDA_SEQ.NEXTVAL, 3, 'Produto B', 15.00, 2);
+
+INSERT INTO SYSTEM.ITENS_COMANDA (ID_ITEM_COMANDA, QTD_ITEM, DESCRICAO_PRODUTO, VALOR_UNITARIO_ITEM, ID_COMANDA)
+VALUES (SYSTEM.ITENS_COMANDA_ID_ITEM_COMANDA_SEQ.NEXTVAL, 2, 'Produto C', 15.00, 3);
+
+INSERT INTO SYSTEM.ITENS_COMANDA (ID_ITEM_COMANDA, QTD_ITEM, DESCRICAO_PRODUTO, VALOR_UNITARIO_ITEM, ID_COMANDA)
+VALUES (SYSTEM.ITENS_COMANDA_ID_ITEM_COMANDA_SEQ.NEXTVAL, 5, 'Produto D', 6.00, 3);
+
+INSERT INTO SYSTEM.ITENS_COMANDA (ID_ITEM_COMANDA, QTD_ITEM, DESCRICAO_PRODUTO, VALOR_UNITARIO_ITEM, ID_COMANDA)
+VALUES (SYSTEM.ITENS_COMANDA_ID_ITEM_COMANDA_SEQ.NEXTVAL, 5, 'Produto D', 6.00, 4);
+
+-- Listar todas as comandas dos respectivos clientes, exibindo o valor total por cada produto
+SELECT c.ID_COMANDA,
+                c.DATA_COMANDA,
+                c.STATUS_COMANDA,
+                cl.NOME_CLIENTE AS CLIENTE,
+                ic.ID_ITEM_COMANDA AS ITEM_COMANDA,
+                ic.DESCRICAO_PRODUTO AS PRODUTO,
+                ic.QTD_ITEM AS QUANTIDADE,
+                ic.VALOR_UNITARIO_ITEM AS VALOR_UNITARIO,
+                (ic.QTD_ITEM * ic.VALOR_UNITARIO_ITEM) AS VALOR_TOTAL
+            FROM COMANDAS c
+            INNER JOIN CLIENTES cl ON c.CPF_CLIENTE = cl.CPF_CLIENTE
+            LEFT JOIN ITENS_COMANDA ic ON c.ID_COMANDA = ic.ID_COMANDA
+            ORDER BY cl.NOME_CLIENTE, c.ID_COMANDA, ic.ID_ITEM_COMANDA
+            
+--Total da soma de cada produto dos clientes
+SELECT cl.NOME_CLIENTE AS CLIENTE,
+       ic.DESCRICAO_PRODUTO AS PRODUTO,
+       SUM(ic.QTD_ITEM * ic.VALOR_UNITARIO_ITEM) AS VALOR_TOTAL_PRODUTO
+FROM CLIENTES cl
+LEFT JOIN COMANDAS c ON cl.CPF_CLIENTE = c.CPF_CLIENTE
+LEFT JOIN ITENS_COMANDA ic ON c.ID_COMANDA = ic.ID_COMANDA
+GROUP BY cl.NOME_CLIENTE, ic.DESCRICAO_PRODUTO
+ORDER BY cl.NOME_CLIENTE, ic.DESCRICAO_PRODUTO;
+
+--Total da soma de todos os produtos dos clientes
+SELECT cl.NOME_CLIENTE AS CLIENTE,
+       SUM(ic.QTD_ITEM * ic.VALOR_UNITARIO_ITEM) AS VALOR_TOTAL_CLIENTE
+FROM CLIENTES cl
+LEFT JOIN COMANDAS c ON cl.CPF_CLIENTE = c.CPF_CLIENTE
+LEFT JOIN ITENS_COMANDA ic ON c.ID_COMANDA = ic.ID_COMANDA
+GROUP BY cl.NOME_CLIENTE
+ORDER BY cl.NOME_CLIENTE;
+
+--Exibe cpf, nome e as informa��es da comanda e itens comanda do cliente. Somando o total de cada produto.
+SELECT c.CPF_CLIENTE,
+       c.NOME_CLIENTE as cliente,
+       co.ID_COMANDA,
+       co.DATA_COMANDA,
+       co.STATUS_COMANDA,
+       i.ID_ITEM_COMANDA as item_comanda,
+       i.DESCRICAO_PRODUTO as produto,
+       i.QTD_ITEM as quantidade,
+       i.VALOR_UNITARIO_ITEM as valor_unitario,
+       (i.QTD_ITEM * i.VALOR_UNITARIO_ITEM) as valor_total
+FROM SYSTEM.CLIENTES c
+INNER JOIN SYSTEM.COMANDAS co ON c.CPF_CLIENTE = co.CPF_CLIENTE
+LEFT JOIN SYSTEM.ITENS_COMANDA i ON co.ID_COMANDA = i.ID_COMANDA
+ORDER BY c.NOME_CLIENTE, i.ID_ITEM_COMANDA;
+
+select i.id_comanda
+     , i.id_item_comanda
+     , i.descricao_produto
+     , i.qtd_item
+     , i.valor_unitario_item
+     , (i.qtd_item * i.valor_unitario_item) as valor_total
+  from itens_comanda i
+  order by i.id_comanda, i.descricao_produto
+
