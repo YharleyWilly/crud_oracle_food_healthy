@@ -2,7 +2,11 @@ Exemplo de Sistema em Python fazendo CRUD no Oracle
 
 Esse sistema de exemplo é composto por um conjunto de tabelas que representam pedidos de uma lanchonete, contendo tabelas como: clientes, comandas e itens de comanda.
 
-O sistema exige que as tabelas existam, então basta executar o script a seguir no sql developer para criação das tabelas e preenchimento de dados de exemplos:
+O sistema exige que as tabelas existam, então basta executar o script a seguir para criação das tabelas:
+
+src/create_table.py
+
+Ou no sql developer:
 sql/create_table_sistema_lanches_saudaveis.sql
 
 Após criado as tabelas no sql developer, basta executar o script Python a seguir:
