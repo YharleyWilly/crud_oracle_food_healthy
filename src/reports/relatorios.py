@@ -25,9 +25,9 @@ class Relatorio:
             i.QTD_ITEM as quantidade,
             i.VALOR_UNITARIO_ITEM as valor_unitario,
             (i.QTD_ITEM * i.VALOR_UNITARIO_ITEM) as valor_total
-            FROM SYSTEM.CLIENTES c
-            INNER JOIN SYSTEM.COMANDAS co ON c.CPF_CLIENTE = co.CPF_CLIENTE
-            LEFT JOIN SYSTEM.ITENS_COMANDA i ON co.ID_COMANDA = i.ID_COMANDA
+            FROM LABDATABASE.CLIENTES c
+            INNER JOIN LABDATABASE.COMANDAS co ON c.CPF_CLIENTE = co.CPF_CLIENTE
+            LEFT JOIN LABDATABASE.ITENS_COMANDA i ON co.ID_COMANDA = i.ID_COMANDA
             ORDER BY c.NOME_CLIENTE, i.ID_ITEM_COMANDA
         '''
         #Relatorio itens comanda de todos os clientes
@@ -54,9 +54,9 @@ class Relatorio:
             i.QTD_ITEM as quantidade,
             i.VALOR_UNITARIO_ITEM as valor_unitario,
             (i.QTD_ITEM * i.VALOR_UNITARIO_ITEM) as valor_total
-            FROM SYSTEM.CLIENTES c 
-            INNER JOIN SYSTEM.COMANDAS co ON c.CPF_CLIENTE = co.CPF_CLIENTE
-            LEFT JOIN SYSTEM.ITENS_COMANDA i ON co.ID_COMANDA = i.ID_COMANDA
+            FROM LABDATABASE.CLIENTES c 
+            INNER JOIN LABDATABASE.COMANDAS co ON c.CPF_CLIENTE = co.CPF_CLIENTE
+            LEFT JOIN LABDATABASE.ITENS_COMANDA i ON co.ID_COMANDA = i.ID_COMANDA
             WHERE c.CPF_CLIENTE = '{cpf_cliente}'
             ORDER BY c.NOME_CLIENTE, i.ID_ITEM_COMANDA
         '''

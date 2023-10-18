@@ -70,4 +70,4 @@ def clear_console(wait_time:int=3):
     import os
     from time import sleep
     sleep(wait_time)
-    os.system("cls")
+    os.system("clear")

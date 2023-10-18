@@ -12,8 +12,8 @@ class OracleQueries:
         self.service_name = 'bd_food_healthy'
         self.sid = 'XE'
         self.cur = None
-        self.user = 'system'
-        self.passwd = 'system2023'
+        self.user = 'labdatabase'
+        self.passwd = 'labDatabase2022'
 
         #with open("conexion\\passphrase\\authentication.oracle", "r") as f:
         #    self.user, self.passwd = f.read().split(',')            
